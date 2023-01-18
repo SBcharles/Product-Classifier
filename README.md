@@ -1,2 +1,2 @@
-# Product-Classifier
-Building an image+title classifier
+# ProductClassifier
+WIP ML Product classifier with API serving model predictions
