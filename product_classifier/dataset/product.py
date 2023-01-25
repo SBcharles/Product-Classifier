@@ -31,7 +31,8 @@ class AmazonProduct(Product):
 
         Notes
         -----
-        Some products within the amazon dataset are tagged with multiple categories. We will take the first category for simplicity.
+        Some products within the amazon dataset are tagged with multiple
+        categories. We will take the first category for simplicity.
         """
         if (not categories) or (not categories[0]):
             raise ValueError('Field: "categories" is empty')
