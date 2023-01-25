@@ -15,10 +15,10 @@ class Product(BaseModel):
     category: str
 
 
-class AmazonProduct(BaseModel):
+class AmazonProduct(Product):
     id: str = Field(..., alias='asin')
     title: str
-    image_url: str = Field(..., alias='imUrl')
+    image: Image
     category: str = Field(..., alias='categories')
 
     @validator('category', pre=True)
