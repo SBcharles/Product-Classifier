@@ -7,7 +7,7 @@ from product_classifier.dataset.data_processing.transform_image import transform
 
 def test_transform_image_resizes():
     start_image = torch.zeros(3, 120, 110, dtype=torch.float)
- # hello
+
     transformed_image = transform_image(start_image)
 
     assert transformed_image.shape == (3, ConfigModel.image_width, ConfigModel.image_height)
