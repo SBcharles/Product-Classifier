@@ -1,5 +1,5 @@
 import os
-from typing import List, Tuple, Set, Dict
+from typing import List, Tuple, Set
 
 from torch import Tensor
 from torch.utils.data import Dataset as TorchDataset
