@@ -6,6 +6,7 @@ from torch.utils.data import Dataset as TorchDataset
 from torchvision.io import read_image
 
 from product_classifier.dataset.product import AmazonProduct
+from product_classifier.dataset.data_processing.transform_image import transform_image
 
 
 class AmazonDataset(TorchDataset):
@@ -18,7 +19,7 @@ class AmazonDataset(TorchDataset):
     def __getitem__(self, idx: int) -> Tuple[Tuple[Tensor, Tensor], int]:
         product = self.products[idx]
         image: Tensor = read_image(product.image.file_path)
-        image = self.transform_image(image)
+        image = transform_image(image)
 
         vectorised_title = self.vectorise_title(product.title)
 
@@ -34,9 +35,6 @@ class AmazonDataset(TorchDataset):
         return set([product.category for product in self.products])
 
     def vectorise_title(self, title: str) -> Tensor:   # todo
-        pass
-
-    def transform_image(self, image: Tensor) -> Tensor:    # todo
         pass
 
     def load(self) -> None:   # todo
