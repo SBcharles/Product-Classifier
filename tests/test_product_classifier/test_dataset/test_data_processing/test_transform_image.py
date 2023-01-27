@@ -2,7 +2,7 @@ import torch
 from torch import Tensor
 
 
-from product_classifier.dataset.transform_image.transform_image import transform_image, base64_image_to_tensor, \
+from product_classifier.dataset.data_processing.transform_image import transform_image, base64_image_to_tensor, \
     image_width, image_height
 
 

@@ -6,7 +6,7 @@ from torch.utils.data import Dataset as TorchDataset
 from torchvision.io import read_image
 
 from product_classifier.dataset.product import AmazonProduct
-from product_classifier.dataset.transform_image.transform_image import transform_image
+from product_classifier.dataset.data_processing.transform_image import transform_image
 
 
 class AmazonDataset(TorchDataset):
