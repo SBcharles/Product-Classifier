@@ -7,10 +7,7 @@ from PIL import Image
 from torch import Tensor
 from torchvision import transforms
 
-
-# Image settings
-image_width = 256
-image_height = 256
+from product_classifier.config import ConfigModel
 
 
 def base64_image_to_tensor(image: str) -> Tensor:
@@ -24,7 +21,7 @@ def transform_image(image: Tensor) -> Tensor:
     if _are_channels_last(image):
         image = _permute_channels_to_first(image)
 
-    new_size = (image_width, image_height)
+    new_size = (ConfigModel.image_width, ConfigModel.image_height)
     image = image.to(torch.uint8)  # transform tensor dtype for Normalize step to work
     normalised_image = image / 255.0
 

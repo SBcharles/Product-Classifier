@@ -1,9 +1,8 @@
 import torch
 from torch import Tensor
 
-
-from product_classifier.dataset.data_processing.transform_image import transform_image, base64_image_to_tensor, \
-    image_width, image_height
+from product_classifier.config import ConfigModel
+from product_classifier.dataset.data_processing.transform_image import transform_image, base64_image_to_tensor
 
 
 def test_transform_image_resizes():
@@ -11,7 +10,7 @@ def test_transform_image_resizes():
 
     transformed_image = transform_image(start_image)
 
-    assert transformed_image.shape == (3, image_width, image_height)
+    assert transformed_image.shape == (3, ConfigModel.image_width, ConfigModel.image_height)
 
 
 def test_base64_image_to_tensor():
