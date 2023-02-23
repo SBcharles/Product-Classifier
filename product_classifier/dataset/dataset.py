@@ -46,3 +46,7 @@ class AmazonDataset(TorchDataset):
 
     def set_word_embedding(self, embeddings_dict: Dict[str, Tensor]):
         self.embeddings_dict = embeddings_dict
+
+    def set_class_name_to_idx(self):
+        self.class_name_to_idx = {category: idx for idx, category in enumerate(sorted(self.categories))}
+        self.idx_to_class_name = {idx: category for idx, category in enumerate(sorted(self.categories))}
