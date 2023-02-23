@@ -27,7 +27,7 @@ class AmazonDataset(TorchDataset):
             title=product.title,
             embeddings_dict=self.embeddings_dict)
 
-        class_idx = self.category_to_idx(product.category)
+        class_idx = self.category_to_idx[product.category]
 
         return (image, vectorised_title), class_idx
 
@@ -47,6 +47,6 @@ class AmazonDataset(TorchDataset):
     def set_word_embedding(self, embeddings_dict: Dict[str, Tensor]):
         self.embeddings_dict = embeddings_dict
 
-    def set_class_name_to_idx(self):
-        self.class_name_to_idx = {category: idx for idx, category in enumerate(sorted(self.categories))}
-        self.idx_to_class_name = {idx: category for idx, category in enumerate(sorted(self.categories))}
+    def set_category_to_idx(self):
+        self.category_to_idx = {category: idx for idx, category in enumerate(sorted(self.categories))}
+        self.idx_to_category = {idx: category for idx, category in enumerate(sorted(self.categories))}
