@@ -1,5 +1,5 @@
 import os
-from typing import List, Tuple, Set
+from typing import List, Tuple, Set, Dict
 
 from torch import Tensor
 from torch.utils.data import Dataset as TorchDataset
@@ -43,3 +43,6 @@ class AmazonDataset(TorchDataset):
         product dictionary into an AmazonProduct object and appends it to
         self.products"""
         pass
+
+    def set_word_embedding(self, embeddings_dict: Dict[str, Tensor]):
+        self.embeddings_dict = embeddings_dict
