@@ -14,13 +14,14 @@ def test_category_type_transformed_to_string():
     assert amazon_product.category == 'books'
 
 
-def test_exception_raised_if_category_empty():
+@pytest.mark.parametrize('categories_in', [[], [[]]])
+def test_exception_raised_if_category_empty(categories_in):
     with pytest.raises(ValueError):
         AmazonProduct(
             asin='',
             title='',
             image=Image(url='', file_path=''),
-            categories=[[]]
+            categories=categories_in
         )
 
 
