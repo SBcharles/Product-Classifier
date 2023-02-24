@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 from product_classifier.dataset.data_processing.vectorise_title import vectorize_title
 from product_classifier.dataset.exceptions import UnsupportedImageType
-from product_classifier.dataset.product import AmazonProduct, Image
+from product_classifier.dataset.product import AmazonProduct
 from product_classifier.dataset.data_processing.transform_image import transform_image
 
 
