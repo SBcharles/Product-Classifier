@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Optional, List
 
 from pydantic import BaseModel, validator, Field
@@ -20,6 +21,13 @@ class AmazonProduct(Product):
     title: str
     image: Image
     category: str = Field(..., alias='categories')
+
+    @classmethod
+    def parse_product(cls, amazon_product_str: str) -> AmazonProduct:
+        amazon_product_dict = eval(amazon_product_str)
+        new_product_dict = {k: amazon_product_dict.get(k, None) for k in ('asin', 'categories', 'title')}
+        new_product_dict['image'] = Image(url=amazon_product_dict['imUrl'])
+        return cls(**new_product_dict)
 
     @validator('category', pre=True)
     def transform_category_type(cls, categories: List[List[str]]) -> str:
