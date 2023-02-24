@@ -79,10 +79,10 @@ if __name__ == "__main__":
     amazon_dataset.filter_products(filter_out_products_with_invalid_images)
     amazon_dataset.filter_products(filter_out_products_from_minority_classes)
     amazon_dataset.filter_products(filter_out_products_to_balance_dataset)
-    amazon_dataset.set_class_name_to_idx()
+    amazon_dataset.set_category_to_idx()
 
     idx_to_class_name_file_path = os.path.join(timestamped_model_dir, "idx_to_class_name.json")
-    write_json_file(idx_to_class_name_file_path, amazon_dataset.idx_to_class_name)
+    write_json_file(idx_to_class_name_file_path, amazon_dataset.idx_to_category)
 
     train, val, test = train_val_test_split(amazon_dataset, config_training.train_val_test_proportions)
 
@@ -113,7 +113,7 @@ if __name__ == "__main__":
         dataloader=test_loader
     )
 
-    class_names = [test.idx_to_class_name[idx] for idx in range(len(test.idx_to_class_name))]
+    class_names = [test.idx_to_category[idx] for idx in range(len(test.idx_to_category))]
     display_confusion_matrix(net, test_loader, class_names)
 
     print('Testset accuracy: ', test_accuracy)
