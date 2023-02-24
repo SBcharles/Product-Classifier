@@ -7,6 +7,7 @@ from torch import Tensor
 from torch.utils.data import Dataset as TorchDataset
 from torchvision.io import read_image
 from tqdm import tqdm
+from collections import OrderedDict
 
 from product_classifier.dataset.data_processing.vectorise_title import vectorize_title
 from product_classifier.dataset.exceptions import UnsupportedImageType
@@ -41,6 +42,16 @@ class AmazonDataset(TorchDataset):
     @property
     def categories(self) -> Set[str]:
         return set([product.category for product in self.products])
+
+    @property
+    def class_distribution(self) -> Dict[str, float]:
+        """Returns a mapping from class name to number of products in that class, ordered
+         by decreasing class proportion"""
+        class_counts = {category: 0 for category in self.categories}
+        for product in self.products:
+            class_counts[product.category] += 1
+        class_distribution = {category: (count / len(self.products)) for category, count in class_counts.items()}
+        return OrderedDict(sorted(class_distribution.items(), key=lambda item: item[1]))
 
     def load(self, file_name: str, max_products: int) -> None:
         """Loads the amazon dataset JSON file which contains the amazon dataset, parses each
