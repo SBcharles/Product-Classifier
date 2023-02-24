@@ -17,7 +17,7 @@ def generate_amazon_product_strings():
     def _generate_amazon_product_strings(num_products: int):
         product_strings = []
         for idx in range(num_products):
-            product_string = f'{{\'asin\': \'asin_{idx}\', \'image\': Image(url=\'imUrl_{idx}.png\', file_path=\'file_path_{idx}\'), \'categories\': [[\'category_{idx}\']], \'title\': \'title_{idx}\'}}'
+            product_string = f'{{\'asin\': \'asin_{idx}\', \'imUrl\': \'imUrl_{idx}.png\', \'categories\': [[\'category_{idx}\']], \'title\': \'title_{idx}\'}}'
             product_strings.append(product_string)
         return product_strings
     return _generate_amazon_product_strings
@@ -28,7 +28,7 @@ def generate_amazon_dataset(tmp_path, generate_amazon_product_strings):
     def _generate_amazon_dataset(num_products: int):
         products = []
         for product_string in generate_amazon_product_strings(num_products):
-            products.append(AmazonProduct(**eval(product_string)))
+            products.append(AmazonProduct.parse_product(product_string))
         dataset = AmazonDataset(str(tmp_path))
         dataset.products = products
         return dataset
@@ -143,9 +143,11 @@ def test_load_reads_file_and_can_parse_a_product(generate_amazon_dataset_file):
     assert amazon_dataset.products[0].dict() == {
         'id': 'asin_0',
         'title': 'title_0',
-        'image_url': 'imUrl_0.png',
+        'image': {
+            'url': 'imUrl_0.png',
+            'file_path': None
+        },
         'category': 'category_0',
-        'image_file': None
     }
 
 

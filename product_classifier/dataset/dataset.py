@@ -1,12 +1,13 @@
 import os
 from typing import List, Tuple, Set, Dict
 
+from pydantic import ValidationError
 from torch import Tensor
 from torch.utils.data import Dataset as TorchDataset
 from torchvision.io import read_image
 
 from product_classifier.dataset.data_processing.vectorise_title import vectorize_title
-from product_classifier.dataset.product import AmazonProduct
+from product_classifier.dataset.product import AmazonProduct, Image
 from product_classifier.dataset.data_processing.transform_image import transform_image
 
 
@@ -38,11 +39,27 @@ class AmazonDataset(TorchDataset):
     def categories(self) -> Set[str]:
         return set([product.category for product in self.products])
 
-    def load(self) -> None:   # todo
-        """Loads the JSON file containing the amazon dataset, parses each
-        product dictionary into an AmazonProduct object and appends it to
-        self.products"""
-        pass
+    def load(self, file_name: str, max_products: int) -> None:
+        """Loads the amazon dataset JSON file which contains the amazon dataset, parses each
+        product dictionary into an AmazonProduct object and appends it to self.products"""
+        dataset_file_path = os.path.join(self.dataset_dir, file_name)
+
+        with open(dataset_file_path) as file:
+            print('Loading dataset...')
+            incomplete_product_count = 0
+
+            for _ in range(max_products):
+                try:
+                    product = AmazonProduct.parse_product(next(file))
+                    self.products.append(product)
+                except ValidationError:
+                    incomplete_product_count += 1
+                    continue
+                except StopIteration:
+                    break
+
+            print(f'Number of incomplete products: {incomplete_product_count}',
+                  f'({incomplete_product_count/(incomplete_product_count + len(self.products)):.3%})')
 
     def set_word_embedding(self, embeddings_dict: Dict[str, Tensor]):
         self.embeddings_dict = embeddings_dict
