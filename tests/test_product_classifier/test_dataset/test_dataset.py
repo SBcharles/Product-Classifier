@@ -61,7 +61,7 @@ def mock_image_response():
 @pytest.fixture
 def mock_requests_get(mock_image_response, monkeypatch):
     mock_requests_get = Mock(return_value=mock_image_response)
-    monkeypatch.setattr('natebbproductclassifier.dataset_creation.dataset.requests.get', mock_requests_get)
+    monkeypatch.setattr('product_classifier.dataset.dataset.requests.get', mock_requests_get)
     return mock_requests_get
 
 
@@ -70,7 +70,7 @@ def example_product():
     product_dict = {
         'asin': 'asin_0',
         'title': 'title_0',
-        'image': Image(url='', filepath='imUrl_0.png'),
+        'image': Image(url='imUrl_0.png', filepath='imUrl_0.png'),
         'categories': [['category_0']]
     }
     product = AmazonProduct(**product_dict)
@@ -78,7 +78,7 @@ def example_product():
 
 
 @pytest.fixture()
-def example_dataset_dir(tmp_path):
+def example_dataset_dir(tmp_path) -> Path:
     dataset_dir = tmp_path / "amazon_dataset"
     dataset_dir.mkdir()
     return dataset_dir
@@ -176,14 +176,14 @@ def test_load_parses_all_products_in_file_if_max_products_greater(generate_amazo
 
 
 def test_download_product_images_downloads_image_and_saves(mock_requests_get, example_product, example_dataset_dir,
-                                                           example_product_image_path, tmp_path):
+                                                           example_product_image_path):
     an_amazon_dataset = AmazonDataset(str(example_dataset_dir))
     an_amazon_dataset.products = [example_product]
 
     an_amazon_dataset.download_product_images()
 
     assert os.path.exists(example_product_image_path)
-    mock_requests_get.assert_called_with(url=example_product.image_url, allow_redirects=True)
+    mock_requests_get.assert_called_with(url=example_product.image.url, allow_redirects=True)
 
 
 def test_download_product_images_skips_download_if_file_exists_already(mock_requests_get, example_product,
