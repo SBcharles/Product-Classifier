@@ -1,4 +1,7 @@
-class ConfigTraining:
+from product_classifier.config.base import ConfigBase
+
+
+class ConfigTraining(ConfigBase):
 
     dataset_dir = '/home/ubuntu/data_store/training_data/nate.blackbox.product.classifier.model/amazon_dataset'
     model_weights_dir = '/home/ubuntu/data_store/trained_models/nate.blackbox.product.classifier/classifier_models'

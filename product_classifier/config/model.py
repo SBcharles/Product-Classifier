@@ -2,10 +2,12 @@ import logging
 import os
 import yaml
 
+from product_classifier.config.base import ConfigBase
+
 module_logger = logging.getLogger(__name__)
 
 
-class ConfigModel:
+class ConfigModel(ConfigBase):
     image_width = 256
     image_height = 256
 
