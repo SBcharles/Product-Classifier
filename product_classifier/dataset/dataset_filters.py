@@ -32,10 +32,9 @@ def filter_out_products_with_invalid_images(products: List[Product]) -> List[Pro
     print('Filtering out non RGB, and non jpg/png images...')
 
     filtered_products = []
-    is_product_image_rgb = lambda product: read_image(product.image_file.path).shape[0] == 3
     for product in tqdm(products):
         try:
-            if is_product_image_rgb(product):
+            if _is_product_image_rgb(product):
                 filtered_products.append(product)
         except RuntimeError:
             print(f'Cannot load for image for {product.title} ({product.image_url}) \n because file type not jpeg/png.')
@@ -50,3 +49,7 @@ def filter_out_products_from_minority_classes(products: List[Product]) -> List[P
 
 def _filter_products_by_class_name(products: List[Product], classes_to_keep: List[str]) -> List[Product]:
     return [product for product in tqdm(products) if product.category in classes_to_keep]
+
+
+def _is_product_image_rgb(product: Product) -> bool:
+    return read_image(product.image.file_path).shape[0] == 3
