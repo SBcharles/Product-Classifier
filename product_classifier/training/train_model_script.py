@@ -71,13 +71,6 @@ if __name__ == "__main__":
     config_training.save(timestamped_model_dir)
     config_model.save(timestamped_model_dir)
 
-    # Track model training on ClaerML
-    # task = initialise_clearml_experiment(
-    #     configurations=[config_training, config_model],
-    #     experiment_type='Training',
-    #     timestamp=os.path.basename(timestamped_model_dir)
-    # )
-
     amazon_dataset = AmazonDataset(config_training.dataset_dir)
 
     amazon_dataset.load('metadata.json', max_products=config_training.max_products)
@@ -124,4 +117,3 @@ if __name__ == "__main__":
     display_confusion_matrix(net, test_loader, class_names)
 
     print('Testset accuracy: ', test_accuracy)
-    # task.close()
