@@ -1,5 +1,5 @@
 import os
-from typing import List, Tuple, Set, Dict, Optional
+from typing import List, Tuple, Set, Dict, Optional, Callable
 
 import requests
 from pydantic import ValidationError
@@ -109,3 +109,10 @@ class AmazonDataset(TorchDataset):
             response.raise_for_status()
             with open(image_file_path, 'wb') as file:
                 file.write(response.content)
+
+    def filter_products(self, filter_function: Callable[[List[AmazonProduct]], List[AmazonProduct]]) -> None:
+        num_products_pre_filter = len(self.products)
+        self.products = filter_function(self.products)
+        num_products_post_filter = len(self.products)
+        num_products_filtered_out = num_products_pre_filter - num_products_post_filter
+        print(f'Number of products filtered out: {num_products_filtered_out}, ({100 * num_products_filtered_out / num_products_pre_filter :.2f}%)')
